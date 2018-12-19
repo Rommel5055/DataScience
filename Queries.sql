@@ -58,4 +58,9 @@ CREATE TABLE [JoinTables].[dbo].[JoinAll] (
 
 -----------------------------
 
+Update [JoinTables].[dbo].[JoinAll]
+SET 
+	[JoinTables].[dbo].[JoinAll].[Operacion] = [expterra].[dbo].[Embarqueaereo].[operacion]
+FROM [JoinTables].[dbo].[JoinAll]
+INNER JOIN [expterra].[dbo].[Embarqueaereo] ON ([expterra].[dbo].[Embarqueaereo].[numero] = [JoinTables].[dbo].[JoinAll].[numero])
 
