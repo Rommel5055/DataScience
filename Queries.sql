@@ -37,3 +37,25 @@ GROUP BY [expmarit].[dbo].[envases].[numero],
 [expmarit].[dbo].[embarqueaereo].[ContratoCli],
 [expmarit].[dbo].[embarqueaereo].[ContratoTra]
 
+------------------------
+CREATE TABLE [JoinTables].[dbo].[JoinAll] (
+    ID int IDENTITY(1,1) PRIMARY KEY,
+    numero int,
+    origen varchar(255),
+	empresa varchar(255),
+    transportista int,
+	Pago varchar(255),
+	agente varchar(255),
+	consignatario varchar(255),
+	embarcador varchar(255),
+	nombre varchar(255),
+	movimiento varchar(255),
+	trafico varchar(255),
+	terminos varchar(255),
+	ContratoCli varchar(255),
+	ContratoTra varchar(255)
+);
+
+-----------------------------
+
+
