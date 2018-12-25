@@ -70,3 +70,37 @@ FROM sys.columns c
     JOIN sys.tables t ON c.object_id = t.object_id
 WHERE c.name LIKE '%MyCol%';
 --------------------------
+
+SELECT 
+j.numero,
+j.empresa,
+e.ETD,
+j.ETA,
+j.Operacion	
+into JoinClientesRecientes
+from JoinAll2 as j
+INNER JOIN export.dbo.embarqueaereo as e ON (j.numero = e.numero) -- do for the other DBs
+Where e.etd >= DATEADD(month, -6, GETDATE())
+GROUP BY  
+j.numero,
+j.empresa,
+e.ETD,
+j.ETA,
+j.Operacion	
+ -------
+SELECT 
+j.numero,
+j.empresa,
+e.ETD,
+j.ETA,
+j.Operacion	
+into JoinClientesAntiguos
+from JoinAll2 as j
+INNER JOIN export.dbo.embarqueaereo as e ON (j.numero = e.numero) -- do for the other DBs
+Where e.etd < DATEADD(month, -6, GETDATE())
+GROUP BY  
+j.numero,
+j.empresa,
+e.ETD,
+j.ETA,
+j.Operacion	
