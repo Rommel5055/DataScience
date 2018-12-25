@@ -104,3 +104,20 @@ j.empresa,
 e.ETD,
 j.ETA,
 j.Operacion	
+----------------------------------------------------------
+SELECT 
+j.numero,
+j.nombre,
+e.volumencubico,
+e.profitage * 690 as profit, -- precio dolar
+j.Operacion	
+into JoinAgentesxProfit
+from JoinTables.dbo.JoinAll as j
+INNER JOIN export.dbo.embarqueaereo as e ON (j.numero = e.numero) -- do for the other DBs
+Where e.moneda = 2 -- dolares
+GROUP BY  
+j.numero,
+j.nombre,
+e.volumencubico,
+e.profitage,
+j.Operacion	
