@@ -1,42 +1,52 @@
 SELECT 
-[expmarit].[dbo].[envases].[numero],
-[expmarit].[dbo].[embarqueaereo].[origen],
+[impterra].[dbo].[Envases].[numero],
+[impterra].[dbo].[embarqueaereo].[origen],
 [Basico_InternationalLine_2018].[dbo].[clientes].[empresa],  
-[expmarit].[dbo].[embarqueaereo].[transportista],------ Where does it connect?
-[expmarit].[dbo].[embarqueaereo].[Pago],
-[Dataset_InternationalLine_2018].[dbo].[Boleta].[agente],    -------agente?
+[impterra].[dbo].[embarqueaereo].[transportista],
+[impterra].[dbo].[embarqueaereo].[Pago],
+[Dataset_InternationalLine_2018].[dbo].[Boleta].[agente],   
 [Dataset_InternationalLine_2018].[dbo].[Boleta].[consignatario],
 [Dataset_InternationalLine_2018].[dbo].[Boleta].[embarcador],
 [Basico_InternationalLine_2018].[dbo].[vendedores].[nombre],
-[expmarit].[dbo].[Envases].[movimiento],
-[Basico_InternationalLine_2018].[dbo].[CliTraficos].[trafico], ------embarqueaereo
-[expmarit].[dbo].[embarqueaereo].[terminos],
-[expmarit].[dbo].[embarqueaereo].[ContratoCli],
-[expmarit].[dbo].[embarqueaereo].[ContratoTra]
+--[impterra].[dbo].[embarqueaereo].[movimiento],
+[Basico_InternationalLine_2018].[dbo].[CliTraficos].[trafico], 
+[impterra].[dbo].[embarqueaereo].[terminos],
+[impterra].[dbo].[embarqueaereo].[ContratoCli],
+[impterra].[dbo].[embarqueaereo].[ContratoTra],
+[seguir].[dbo].[Seguimiento].[eta],
+[seguir].[dbo].[Seguimiento].[etd],
+[seguir].[dbo].[Seguimiento].[status]
 
----INTO [JoinTables].[Joinexpmarit]
-FROM [expmarit].[dbo].[envases]
-LEFT JOIN [expmarit].[dbo].[embarqueaereo] ON ([expmarit].[dbo].[envases].[numero] = [expmarit].[dbo].[embarqueaereo].[numero])
-LEFT JOIN [Basico_InternationalLine_2018].[dbo].[clientes] ON ([Basico_InternationalLine_2018].[dbo].[clientes].[codigo] = [expmarit].[dbo].[Embarqueaereo].[cliente])
-LEFT JOIN [Dataset_InternationalLine_2018].[dbo].[Boleta] ON ([Dataset_InternationalLine_2018].[dbo].[Boleta].[numero] = [expmarit].[dbo].[envases].[numero])
-LEFT JOIN [Basico_InternationalLine_2018].[dbo].[vendedores] ON ([expmarit].[dbo].[embarqueaereo].[vendedor] = [Basico_InternationalLine_2018].[dbo].[Vendedores].[codigo])
-LEFT JOIN [Basico_InternationalLine_2018].[dbo].[CliTraficos] ON ([Basico_InternationalLine_2018].[dbo].[CliTraficos].[codigo] = [expmarit].[dbo].[embarqueaereo].[trafico])
+INTO [JoinData].[dbo].[JoinsOneSix]
+FROM [impterra].[dbo].[envases]
+LEFT JOIN [impterra].[dbo].[embarqueaereo] ON ([impterra].[dbo].[envases].[numero] = [impterra].[dbo].[embarqueaereo].[numero])
+LEFT JOIN [Basico_InternationalLine_2018].[dbo].[clientes] ON ([Basico_InternationalLine_2018].[dbo].[clientes].[codigo] = [impterra].[dbo].[Embarqueaereo].[cliente])
+LEFT JOIN [Dataset_InternationalLine_2018].[dbo].[Boleta] ON ([Dataset_InternationalLine_2018].[dbo].[Boleta].[numero] = [impterra].[dbo].[embarqueaereo].[numero])
+LEFT JOIN [Basico_InternationalLine_2018].[dbo].[vendedores] ON ([impterra].[dbo].[embarqueaereo].[vendedor] = [Basico_InternationalLine_2018].[dbo].[Vendedores].[codigo])
+LEFT JOIN [Basico_InternationalLine_2018].[dbo].[CliTraficos] ON ([Basico_InternationalLine_2018].[dbo].[CliTraficos].[codigo] = [impterra].[dbo].[embarqueaereo].[trafico])
+LEFT JOIN [seguir].[dbo].[Seguimiento] ON ([seguir].[dbo].[Seguimiento].[numero] = [impterra].[dbo].[embarqueaereo].[numero])
 
-GROUP BY [expmarit].[dbo].[envases].[numero],
-[expmarit].[dbo].[embarqueaereo].[origen],
+WHERE [Basico_InternationalLine_2018].[dbo].[vendedores].[Activo] = 's'
+
+GROUP BY [impterra].[dbo].[Envases].[numero],
+[impterra].[dbo].[embarqueaereo].[origen],
 [Basico_InternationalLine_2018].[dbo].[clientes].[empresa],  
-[expmarit].[dbo].[embarqueaereo].[transportista],------ Where does it connect?
-[expmarit].[dbo].[embarqueaereo].[Pago],
-[Dataset_InternationalLine_2018].[dbo].[Boleta].[agente],    -------agente?
+[impterra].[dbo].[embarqueaereo].[transportista],
+[impterra].[dbo].[embarqueaereo].[Pago],
+[Dataset_InternationalLine_2018].[dbo].[Boleta].[agente],    
 [Dataset_InternationalLine_2018].[dbo].[Boleta].[consignatario],
 [Dataset_InternationalLine_2018].[dbo].[Boleta].[embarcador],
 [Basico_InternationalLine_2018].[dbo].[vendedores].[nombre],
-[expmarit].[dbo].[Envases].[movimiento],
-[Basico_InternationalLine_2018].[dbo].[CliTraficos].[trafico], ------embarqueaereo
-[expmarit].[dbo].[embarqueaereo].[terminos],
-[expmarit].[dbo].[embarqueaereo].[ContratoCli],
-[expmarit].[dbo].[embarqueaereo].[ContratoTra]
+--[impterra].[dbo].[Envases].[movimiento],
+[Basico_InternationalLine_2018].[dbo].[CliTraficos].[trafico],
+[impterra].[dbo].[embarqueaereo].[terminos],
+[impterra].[dbo].[embarqueaereo].[ContratoCli],
+[impterra].[dbo].[embarqueaereo].[ContratoTra],
+[seguir].[dbo].[Seguimiento].[eta],
+[seguir].[dbo].[Seguimiento].[etd],
+[seguir].[dbo].[Seguimiento].[status]
 
+order by numero
 ------------------------
 CREATE TABLE [JoinTables].[dbo].[JoinAll] (
     ID int IDENTITY(1,1) PRIMARY KEY,
