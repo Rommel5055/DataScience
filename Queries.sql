@@ -131,3 +131,63 @@ j.nombre,
 e.volumencubico,
 e.profitage,
 j.Operacion	
+		      
+		      
+		      
+----------------------------------------------------
+		      SELECT 
+[seguir].[dbo].[Seguimiento].[numero],
+[seguir].[dbo].[Seguimiento].[origen],
+[seguir].[dbo].[Seguimiento].[destino],
+[Basico_InternationalLine_2018].[dbo].[clientes].[empresa],  
+[Dataset_InternationalLine_2018].[dbo].[InfoFactura].[transportista],
+[seguir].[dbo].[Seguimiento].[Pago],
+[Dataset_InternationalLine_2018].[dbo].[Boleta].[agente],   
+[Dataset_InternationalLine_2018].[dbo].[Boleta].[consignatario],
+[Dataset_InternationalLine_2018].[dbo].[Boleta].[embarcador],
+[Basico_InternationalLine_2018].[dbo].[vendedores].[nombre],
+[seguir].[dbo].[Envases].[movimiento],
+[seguir].[dbo].[Envases].[Peso],
+[Basico_InternationalLine_2018].[dbo].[CliTraficos].[trafico], 
+[seguir].[dbo].[Seguimiento].[terminos],
+[seguir].[dbo].[Seguimiento].[ContratoCli],
+[seguir].[dbo].[Seguimiento].[ContratoTra],
+[seguir].[dbo].[Seguimiento].[eta],
+[seguir].[dbo].[Seguimiento].[etd],
+[seguir].[dbo].[Seguimiento].[status],
+[seguir].[dbo].[Seguimiento].[modo]
+
+--INTO [JoinData].[dbo].[JoinsOneSix]
+FROM [seguir].[dbo].[Seguimiento]
+--LEFT JOIN [impterra].[dbo].[embarqueaereo] ON ([impterra].[dbo].[envases].[numero] = [impterra].[dbo].[embarqueaereo].[numero])
+LEFT JOIN [Basico_InternationalLine_2018].[dbo].[clientes] ON ([Basico_InternationalLine_2018].[dbo].[clientes].[codigo] = [seguir].[dbo].[Seguimiento].[cliente])
+LEFT JOIN [Dataset_InternationalLine_2018].[dbo].[Boleta] ON ([Dataset_InternationalLine_2018].[dbo].[Boleta].[numero] = [seguir].[dbo].[Seguimiento].[numero])
+LEFT JOIN [Basico_InternationalLine_2018].[dbo].[vendedores] ON ([seguir].[dbo].[Seguimiento].[vendedor] = [Basico_InternationalLine_2018].[dbo].[Vendedores].[codigo])
+LEFT JOIN [Basico_InternationalLine_2018].[dbo].[CliTraficos] ON ([Basico_InternationalLine_2018].[dbo].[CliTraficos].[codigo] = [seguir].[dbo].[Seguimiento].[trafico])
+LEFT JOIN [Dataset_InternationalLine_2018].[dbo].[InfoFactura] ON ([Dataset_InternationalLine_2018].[dbo].[InfoFactura].[seguimiento] = [seguir].[dbo].[Seguimiento].[numero])
+LEFT JOIN [seguir].[dbo].[Envases] ON ([seguir].[dbo].[Envases].[numero] = [seguir].[dbo].[Seguimiento].[numero])
+
+WHERE [Basico_InternationalLine_2018].[dbo].[vendedores].[Activo] = 's'
+
+GROUP BY [seguir].[dbo].[Seguimiento].[numero],
+[seguir].[dbo].[Seguimiento].[origen],
+[seguir].[dbo].[Seguimiento].[destino],
+[Basico_InternationalLine_2018].[dbo].[clientes].[empresa],  
+[Dataset_InternationalLine_2018].[dbo].[InfoFactura].[transportista],
+[seguir].[dbo].[Seguimiento].[Pago],
+[Dataset_InternationalLine_2018].[dbo].[Boleta].[agente],   
+[Dataset_InternationalLine_2018].[dbo].[Boleta].[consignatario],
+[Dataset_InternationalLine_2018].[dbo].[Boleta].[embarcador],
+[Basico_InternationalLine_2018].[dbo].[vendedores].[nombre],
+[seguir].[dbo].[Envases].[movimiento],
+[seguir].[dbo].[Envases].[Peso],
+[Basico_InternationalLine_2018].[dbo].[CliTraficos].[trafico], 
+[seguir].[dbo].[Seguimiento].[terminos],
+[seguir].[dbo].[Seguimiento].[ContratoCli],
+[seguir].[dbo].[Seguimiento].[ContratoTra],
+[seguir].[dbo].[Seguimiento].[eta],
+[seguir].[dbo].[Seguimiento].[etd],
+[seguir].[dbo].[Seguimiento].[status],
+[seguir].[dbo].[Seguimiento].[modo]
+
+order by numero
