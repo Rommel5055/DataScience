@@ -191,3 +191,113 @@ GROUP BY [seguir].[dbo].[Seguimiento].[numero],
 [seguir].[dbo].[Seguimiento].[modo]
 
 order by numero
+----------------------------------------------------------------------------------------------
+SELECT 
+[seguir_2014].[dbo].[Seguimiento].[numero],
+[seguir_2014].[dbo].[Seguimiento].[origen],
+[seguir_2014].[dbo].[Seguimiento].[destino],
+[Basico_InternationalLine_2018].[dbo].[clientes].[empresa] as clientes,  
+[Dataset_InternationalLine_2018].[dbo].[InfoFactura].[transportista],
+[seguir_2014].[dbo].[Seguimiento].[Pago],
+[Dataset_InternationalLine_2018].[dbo].[Boleta].[agente],   
+[Dataset_InternationalLine_2018].[dbo].[Boleta].[consignatario],
+[Dataset_InternationalLine_2018].[dbo].[Boleta].[embarcador],
+[Basico_InternationalLine_2018].[dbo].[vendedores].[nombre],
+[seguir_2014].[dbo].[Seguimiento].[Iniciales] as InicialesSeguimiento,
+[import_2014].[dbo].[Embarqueaereo].[iniciales] as InicialesEmbarqueAereo,
+[Seguir_2014].[dbo].[Envases].[movimiento],
+[seguir_2014].[dbo].[Envases].[tipo],
+null as unidad,
+--[import_2014].[dbo].[Envases].[unidad],
+[import_2014].[dbo].[Embarqueaereo].[terminos],
+--null as terminos,
+[seguir_2014].[dbo].[Envases].[Peso],
+[seguir_2014].[dbo].[Envases].[volumen],
+[seguir_2014].[dbo].[Envases].[tara],
+[seguir_2014].[dbo].[Envases].[Envase],
+[seguir_2014].[dbo].[Envases].[profit],
+--null as profit,
+[import_2014].[dbo].[Embarqueaereo].[empresa],
+[import_2014].[dbo].[Embarqueaereo].[consolidado],
+[import_2014].[dbo].[Embarqueaereo].[posicion],
+[import_2014].[dbo].[Embarqueaereo].[pagoflete],
+[import_2014].[dbo].[Embarqueaereo].[fechaembarque],
+[import_2014].[dbo].[Embarqueaereo].[fecharetiro],
+[import_2014].[dbo].[Embarqueaereo].[iniciales] AS InicialesEmbarque, 
+[import_2014].[dbo].[Embarqueaereo].[ContratoCli] as ContratoCLIEmbarque,
+[import_2014].[dbo].[Embarqueaereo].[ContratoTra] as ContratoTraEmbarque,
+[import_2014].[dbo].[Embarqueaereo].[ETD] as ETDembarque,
+[import_2014].[dbo].[Embarqueaereo].[ETA] as ETAembarque,
+[import_2014].[dbo].[Embarqueaereo].[operacion],
+
+[Basico_InternationalLine_2018].[dbo].[Traficos].[nombre] as Trafico, 
+[seguir_2014].[dbo].[Seguimiento].[ContratoCli] as ContratoCLISeguimiento,
+[seguir_2014].[dbo].[Seguimiento].[ContratoTra] as ContratoTraSeguimiento,
+[seguir_2014].[dbo].[Seguimiento].[eta] as ETAseguimiento,
+[seguir_2014].[dbo].[Seguimiento].[etd] as ETDseguimiento,
+[import_2014].[dbo].[Embarqueaereo].[status] as StatusEmbarque,
+[seguir_2014].[dbo].[Seguimiento].[status] as StatusSeguimiento,
+[seguir_2014].[dbo].[Seguimiento].[modo],
+[Basico_InternationalLine_2018].[dbo].[vendedores].[Activo]
+
+INTO [JoinData].[dbo].[FinalJoinsFive]
+FROM [import_2014].[dbo].[Embarqueaereo] 
+--LEFT JOIN [impterra].[dbo].[embarqueaereo] ON ([impterra].[dbo].[envases].[numero] = [impterra].[dbo].[embarqueaereo].[numero])
+INNER JOIN [seguir_2014].[dbo].[Seguimiento]ON ([Seguir_2014].[dbo].[Seguimiento].[numero] = [import_2014].[dbo].[Embarqueaereo].[Seguimiento])
+LEFT JOIN [Basico_InternationalLine_2018].[dbo].[clientes] ON ([Basico_InternationalLine_2018].[dbo].[clientes].[codigo] = [seguir_2014].[dbo].[Seguimiento].[cliente])
+LEFT JOIN [Dataset_InternationalLine_2018].[dbo].[Boleta] ON ([Dataset_InternationalLine_2018].[dbo].[Boleta].[numero] = [seguir_2014].[dbo].[Seguimiento].[numero])
+LEFT JOIN [Basico_InternationalLine_2018].[dbo].[vendedores] ON ([seguir_2014].[dbo].[Seguimiento].[vendedor] = [Basico_InternationalLine_2018].[dbo].[Vendedores].[codigo])
+LEFT JOIN [Basico_InternationalLine_2018].[dbo].[Traficos] ON ([Basico_InternationalLine_2018].[dbo].[Traficos].[codigo] = [seguir_2014].[dbo].[Seguimiento].[trafico])
+LEFT JOIN [Dataset_InternationalLine_2018].[dbo].[InfoFactura] ON ([Dataset_InternationalLine_2018].[dbo].[InfoFactura].[seguimiento] = [seguir_2014].[dbo].[Seguimiento].[numero])
+LEFT JOIN [seguir_2014].[dbo].[Envases] ON ([seguir_2014].[dbo].[Envases].[numero] = [seguir_2014].[dbo].[Seguimiento].[numero])
+
+GROUP BY 
+[seguir_2014].[dbo].[Seguimiento].[numero],
+[seguir_2014].[dbo].[Seguimiento].[origen],
+[seguir_2014].[dbo].[Seguimiento].[destino],
+[Basico_InternationalLine_2018].[dbo].[clientes].[empresa],  
+[Dataset_InternationalLine_2018].[dbo].[InfoFactura].[transportista],
+[seguir_2014].[dbo].[Seguimiento].[Pago],
+[Dataset_InternationalLine_2018].[dbo].[Boleta].[agente],   
+[Dataset_InternationalLine_2018].[dbo].[Boleta].[consignatario],
+[Dataset_InternationalLine_2018].[dbo].[Boleta].[embarcador],
+[Basico_InternationalLine_2018].[dbo].[vendedores].[nombre],
+[seguir_2014].[dbo].[Seguimiento].[Iniciales],
+[import_2014].[dbo].[Embarqueaereo].[iniciales],
+[Seguir_2014].[dbo].[Envases].[movimiento],
+[seguir_2014].[dbo].[Envases].[tipo],
+--null as unidad,
+--[import_2014].[dbo].[Envases].[unidad],
+[import_2014].[dbo].[Embarqueaereo].[terminos],
+--null as terminos,
+[seguir_2014].[dbo].[Envases].[Peso],
+[seguir_2014].[dbo].[Envases].[volumen],
+[seguir_2014].[dbo].[Envases].[tara],
+[seguir_2014].[dbo].[Envases].[Envase],
+[seguir_2014].[dbo].[Envases].[profit],
+--null as profit,
+[import_2014].[dbo].[Embarqueaereo].[empresa],
+[import_2014].[dbo].[Embarqueaereo].[consolidado],
+[import_2014].[dbo].[Embarqueaereo].[posicion],
+[import_2014].[dbo].[Embarqueaereo].[pagoflete],
+[import_2014].[dbo].[Embarqueaereo].[fechaembarque],
+[import_2014].[dbo].[Embarqueaereo].[fecharetiro],
+[import_2014].[dbo].[Embarqueaereo].[iniciales], 
+[import_2014].[dbo].[Embarqueaereo].[ContratoCli],
+[import_2014].[dbo].[Embarqueaereo].[ContratoTra],
+[import_2014].[dbo].[Embarqueaereo].[ETD],
+[import_2014].[dbo].[Embarqueaereo].[ETA],
+[import_2014].[dbo].[Embarqueaereo].[operacion],
+
+[Basico_InternationalLine_2018].[dbo].[Traficos].[nombre], 
+[seguir_2014].[dbo].[Seguimiento].[ContratoCli],
+[seguir_2014].[dbo].[Seguimiento].[ContratoTra],
+[seguir_2014].[dbo].[Seguimiento].[eta],
+[seguir_2014].[dbo].[Seguimiento].[etd],
+[import_2014].[dbo].[Embarqueaereo].[status],
+[seguir_2014].[dbo].[Seguimiento].[status],
+[seguir_2014].[dbo].[Seguimiento].[modo],
+[Basico_InternationalLine_2018].[dbo].[vendedores].[Activo]
+
+order by numero desc
+-------------------------------------------------------------------------------------
