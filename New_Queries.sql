@@ -171,5 +171,32 @@ create table JoinData.dbo.InterJoin (
 	Activo varchar(255),
 	origenBoleta varchar(255),
 	destinoBoleta varchar(255),
-	BD varchar(255)
+	BD varchar(255),
+	teus int
 )
+--------------------------------------------------------------------
+																		      ;with [imaginarytable] AS (
+SELECT [numero]
+      ,sum([teus]) as sumteus
+      ,[movimiento]
+      ,[tipo]
+      ,sum([tara]) as sumtara
+      ,[envase]
+      ,sum([profit]) as sumprofit
+  FROM [JoinData].[dbo].[teus_seguir]
+  group by numero, movimiento, tipo, envase
+)
+
+Update JoinData.dbo.InterJoin
+SET 
+	JoinData.dbo.InterJoin.teus = [imaginarytable].sumteus,
+	JoinData.dbo.InterJoin.movimiento = [imaginarytable].movimiento,
+	JoinData.dbo.InterJoin.tipo = [imaginarytable].tipo,
+	JoinData.dbo.InterJoin.tara = [imaginarytable].sumtara,
+	JoinData.dbo.InterJoin.envase = [imaginarytable].envase,
+	JoinData.dbo.InterJoin.profit = [imaginarytable].sumprofit
+FROM [JoinData].[dbo].[InterJoin]
+INNER JOIN [imaginarytable] ON ([imaginarytable].[numero] = [JoinData].[dbo].[InterJoin].[num])
+where [JoinData].[dbo].[InterJoin].[BD] = 'InterLine'
+
+--group by numero, movimiento, tipo, envase
