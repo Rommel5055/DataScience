@@ -1,0 +1,95 @@
+create trigger insert_expmarit_2014 
+ON expmarit_2014.dbo.embarqueaereo
+AFTER INSERT FOR EACH ROW 
+
+INSERT INTO InternationalBI.dbo.InterJoin (
+
+numero,
+num,
+origen,
+destino,
+clientes,  
+transportista,
+Pago,
+agente,   
+consignatario,
+embarcador,
+nombre,
+InicialesSeguimiento,
+InicialesEmbarqueAereo,
+terminos,
+empresa,
+consolidado,
+posicion,
+pagoflete,
+fechaembarque,
+fecharetiro,
+InicialesEmbarque, 
+ContratoCLIEmbarque,
+ContratoTraEmbarque,
+ETDembarque,
+ETAembarque,
+operacion,
+Trafico, 
+ContratoCLISeguimiento,
+ContratoTraSeguimiento,
+ETAseguimiento,
+ETDseguimiento,
+StatusEmbarque,
+StatusSeguimiento,
+modo,
+Activo,
+origenBoleta,
+destinoBoleta,
+BD
+
+)
+
+Select 
+
+concat(str([seguir_2014].[dbo].[Seguimiento].[numero]),'IL'),
+[seguir_2014].[dbo].[Seguimiento].[numero],
+[seguir_2014].[dbo].[Seguimiento].[origen],
+[seguir_2014].[dbo].[Seguimiento].[destino],
+[Basico_InternationalLine_2018].[dbo].[clientes].[empresa],  
+[Dataset_InternationalLine_2018].[dbo].[InfoFactura].[transportista],
+[seguir_2014].[dbo].[Seguimiento].[Pago],
+[Dataset_InternationalLine_2018].[dbo].[Boleta].[agente],   
+[Dataset_InternationalLine_2018].[dbo].[Boleta].[consignatario],
+[Dataset_InternationalLine_2018].[dbo].[Boleta].[embarcador],
+[Basico_InternationalLine_2018].[dbo].[vendedores].[nombre],
+[seguir_2014].[dbo].[Seguimiento].[Iniciales],
+[expmarit_2014].[dbo].[Embarqueaereo].[iniciales],
+[expmarit_2014].[dbo].[Embarqueaereo].[terminos],
+[expmarit_2014].[dbo].[Embarqueaereo].[empresa],
+[expmarit_2014].[dbo].[Embarqueaereo].[consolidado],
+[expmarit_2014].[dbo].[Embarqueaereo].[posicion],
+[expmarit_2014].[dbo].[Embarqueaereo].[pagoflete],
+[expmarit_2014].[dbo].[Embarqueaereo].[fechaembarque],
+[expmarit_2014].[dbo].[Embarqueaereo].[fecharetiro],
+[expmarit_2014].[dbo].[Embarqueaereo].[iniciales], 
+[expmarit_2014].[dbo].[Embarqueaereo].[ContratoCli],
+[expmarit_2014].[dbo].[Embarqueaereo].[ContratoTra],
+[expmarit_2014].[dbo].[Embarqueaereo].[ETD],
+[expmarit_2014].[dbo].[Embarqueaereo].[ETA],
+[expmarit_2014].[dbo].[Embarqueaereo].[operacion],
+[Basico_InternationalLine_2018].[dbo].[Traficos].[nombre], 
+[seguir_2014].[dbo].[Seguimiento].[ContratoCli],
+[seguir_2014].[dbo].[Seguimiento].[ContratoTra],
+[seguir_2014].[dbo].[Seguimiento].[eta],
+[seguir_2014].[dbo].[Seguimiento].[etd],
+[expmarit_2014].[dbo].[Embarqueaereo].[status],
+[seguir_2014].[dbo].[Seguimiento].[status],
+[seguir_2014].[dbo].[Seguimiento].[modo],
+[Basico_InternationalLine_2018].[dbo].[vendedores].[Activo],
+[Dataset_InternationalLine_2018].[dbo].[Boleta].[Origen],
+[Dataset_InternationalLine_2018].[dbo].[Boleta].[Destino],
+'InternationalLine'
+
+FROM [expmarit_2014].[dbo].[Embarqueaereo] 
+INNER JOIN [seguir_2014].[dbo].[Seguimiento]ON ([seguir_2014].[dbo].[Seguimiento].[numero] = [expmarit_2014].[dbo].[Embarqueaereo].[Seguimiento])
+LEFT JOIN [Basico_InternationalLine_2018].[dbo].[clientes] ON ([Basico_InternationalLine_2018].[dbo].[clientes].[codigo] = [seguir_2014].[dbo].[Seguimiento].[cliente])
+LEFT JOIN [Dataset_InternationalLine_2018].[dbo].[Boleta] ON ([Dataset_InternationalLine_2018].[dbo].[Boleta].[posicion] = [seguir_2014].[dbo].[Seguimiento].[posicion])
+LEFT JOIN [Basico_InternationalLine_2018].[dbo].[vendedores] ON ([seguir_2014].[dbo].[Seguimiento].[vendedor] = [Basico_InternationalLine_2018].[dbo].[Vendedores].[codigo])
+LEFT JOIN [Basico_InternationalLine_2018].[dbo].[Traficos] ON ([Basico_InternationalLine_2018].[dbo].[Traficos].[codigo] = [seguir_2014].[dbo].[Seguimiento].[trafico])
+LEFT JOIN [Dataset_InternationalLine_2018].[dbo].[InfoFactura] ON ([Dataset_InternationalLine_2018].[dbo].[InfoFactura].[seguimiento] = [seguir_2014].[dbo].[Seguimiento].[numero])
