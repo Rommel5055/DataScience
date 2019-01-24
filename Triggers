@@ -24,16 +24,24 @@ INNER JOIN sys.schemas s
 WHERE sysobjects.type = 'TR' 
 
 ---------------------------------------------
-
+select TRG.name, ETS.last_execution_time
+from sys.dm_exec_trigger_stats AS ETS
+     INNER JOIN
+     sys.triggers AS TRG
+         ON ETS.object_id = TRG.object_id
 
 
 
 
 
 -------------------------------------------------
+use expmarit_2014
+go
+
+
 create trigger insert_expmarit_2014 
-ON expmarit_2014.dbo.embarqueaereo
-AFTER INSERT FOR EACH ROW 
+ON [Embarqueaereo]
+AFTER INSERT AS
 
 INSERT INTO InternationalBI.dbo.InterJoin (
 
