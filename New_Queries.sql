@@ -1,22 +1,45 @@
-Select numero, (CASE
-	when [Seguir].[dbo].[Envases].[unidad] = '20'
-		then ([Seguir].[dbo].[Envases].[cantidad] * count([Seguir].[dbo].[Envases].[numero]))
-	when [Seguir].[dbo].[Envases].[unidad] = '40' or [Seguir].[dbo].[Envases].[unidad] = '45'
-		then ([Seguir].[dbo].[Envases].[cantidad] * 2 * count([Seguir].[dbo].[Envases].[numero]))
+insert into InternationalBI.dbo.calculations_2014
+
+Select [impmarit].[dbo].[Envases].numero,
+	[impmarit].[dbo].[Embarqueaereo].posicion,
+	(CASE
+	when [impmarit].[dbo].[Envases].[unidad] = '20'
+		then ([impmarit].[dbo].[Envases].[cantidad] * count([impmarit].[dbo].[Envases].[numero]))
+	when [impmarit].[dbo].[Envases].[unidad] = '40' or [impmarit].[dbo].[Envases].[unidad] = '45'
+		then ([impmarit].[dbo].[Envases].[cantidad] * 2 * count([impmarit].[dbo].[Envases].[numero]))
 	else
 		0
 		END) AS teus,
-	movimiento,
-	tipo,
-	tara,
-	envase,
-	profit
+	[impmarit].[dbo].[Envases].movimiento,
+	[impmarit].[dbo].[Envases].tipo,
+	[impmarit].[dbo].[Envases].tara,
+	[impmarit].[dbo].[Envases].envase,
+	[impmarit].[dbo].[Envases].profit,
+	--null as profit,
+	[impmarit].[dbo].[Envases].precio*[impmarit].[dbo].[Envases].cantidad as pc,
+	[impmarit].[dbo].[Envases].costo*[impmarit].[dbo].[Envases].cantidad as cc,
+	[impmarit].[dbo].[serviceaereo].precio,
+	[impmarit].[dbo].[serviceaereo].costo,
+	[impmarit].[dbo].[serviceaereo].arbitraje
 
-	into JoinData.dbo.teus_seguir
-  FROM [Seguir].[dbo].[Envases]
-  group by numero,
-  unidad, cantidad, movimiento, tipo, tara, envase, profit
+
+  FROM [impmarit].[dbo].[Envases]
+  left join [impmarit].[dbo].[embarqueaereo] ON ([impmarit].[dbo].[embarqueaereo].numero = [impmarit].[dbo].[Envases].numero)
+  left join [impmarit].[dbo].[serviceaereo] ON ([impmarit].[dbo].[serviceaereo].numero = [impmarit].[dbo].[envases].numero)
+  group by [impmarit].[dbo].[envases].numero, [impmarit].[dbo].[serviceaereo].numero, 
+  unidad, cantidad, movimiento, tipo, tara, envase, 
+  profit, 
+  [impmarit].[dbo].[serviceaereo].precio, [impmarit].[dbo].[serviceaereo].costo,
+  [impmarit].[dbo].[Envases].precio, [impmarit].[dbo].[Envases].cantidad,
+  [impmarit].[dbo].[Envases].costo, [impmarit].dbo.serviceaereo.arbitraje,
+  [impmarit].dbo.embarqueaereo.posicion
   --------------------------------------------------------
+  
+  
+  
+  
+  
+  
   SELECT 
 concat(str([seguir].[dbo].[Seguimiento].[numero]),'IL') as numero,
 [seguir].[dbo].[Seguimiento].[numero] as num,
@@ -175,15 +198,15 @@ create table JoinData.dbo.InterJoin (
 	teus int
 )
 --------------------------------------------------------------------
-																		      ;with [imaginarytable] AS (
+;with imaginarytable as (																		      ;with [imaginarytable] AS (
 SELECT [numero]
       ,sum([teus]) as sumteus
       ,[movimiento]
       ,[tipo]
       ,sum([tara]) as sumtara
       ,[envase]
-      ,sum([profit]) as sumprofit
-  FROM [JoinData].[dbo].[teus_seguir]
+      ,(sum(precio/arbitraje) - sum(costo/arbitraje))+max(pc)-max(cc) as sumprofit
+  FROM [JoinData].[dbo].[calculations_2014]
   group by numero, movimiento, tipo, envase
 )
 
@@ -198,5 +221,27 @@ SET
 FROM [JoinData].[dbo].[InterJoin]
 INNER JOIN [imaginarytable] ON ([imaginarytable].[numero] = [JoinData].[dbo].[InterJoin].[num])
 where [JoinData].[dbo].[InterJoin].[BD] = 'InterLine'
+
+--group by numero, movimiento, tipo, envase
+
+--------------------------------------------------------------------
+select numero, (sum(precio/arbitraje) - sum(costo/arbitraje))+max(pc)-max(cc) as prof, profit
+from InternationalBI.dbo.teus_seguir
+group by numero, profit
+					    
+--------------------------------------------------------------------------------------------------
+;with imaginarytable as (																		      
+SELECT [posicion], (sum(precio/arbitraje) - sum(costo/arbitraje))+max(pc)-max(cc) as prof
+from InternationalBI.dbo.calculations
+group by posicion
+
+)
+
+Update InternationalBI.dbo.InterJoin
+SET 
+	InternationalBI.dbo.InterJoin.profit = [imaginarytable].prof
+FROM InternationalBI.[dbo].[InterJoin]
+INNER JOIN [imaginarytable] ON ([imaginarytable].posicion COLLATE DATABASE_DEFAULT= InternationalBI.[dbo].[InterJoin].posicion COLLATE DATABASE_DEFAULT)
+where InternationalBI.[dbo].[InterJoin].[BD] = 'InterLine'
 
 --group by numero, movimiento, tipo, envase
