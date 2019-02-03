@@ -1,0 +1,399 @@
+INSERT INTO JoinInternational.dbo.inteligence
+
+SELECT 
+concat(str([seguir_2014].[dbo].[Seguimiento].[numero]),'IL') as numero,
+[seguir_2014].[dbo].[Seguimiento].[numero] as num,
+[seguir_2014].[dbo].[Seguimiento].[origen],
+[seguir_2014].[dbo].[Seguimiento].[destino],
+[Basico_InternationalLine_2018].[dbo].[clientes].[empresa] as clientes,  
+[Dataset_InternationalLine_2018].[dbo].[InfoFactura].[transportista],
+[seguir_2014].[dbo].[Seguimiento].[Pago],
+[Dataset_InternationalLine_2018].[dbo].[Boleta].[agente],   
+[Dataset_InternationalLine_2018].[dbo].[Boleta].[consignatario],
+[Dataset_InternationalLine_2018].[dbo].[Boleta].[embarcador],
+[Basico_InternationalLine_2018].[dbo].[vendedores].[nombre],
+[seguir_2014].[dbo].[Seguimiento].[Iniciales] as InicialesSeguimiento,
+null as [InicialesEmbarqueAereo],
+null as [movimiento],
+null as tipo,
+null as unidad,
+null as terminos,
+null as peso, 
+null as volumen, 
+null as tara, 
+null as Envase, 
+null as profit,
+null as empresa,
+null as [consolidado],
+null as [posicion],
+null as [pagoflete],
+null as [fechaembarque],
+null as [fecharetiro],
+null as [InicialesEmbarque],
+null as [ContratoCLIEmbarque],
+null as [ContratoTraEmbarque],
+null as [ETDembarque],
+null as [ETAembarque],
+null as [operacion],
+[Basico_InternationalLine_2018].[dbo].[Traficos].[nombre] as Trafico, 
+[seguir_2014].[dbo].[Seguimiento].[ContratoCli] as ContratoCLISeguimiento,
+[seguir_2014].[dbo].[Seguimiento].[ContratoTra] as ContratoTraSeguimiento,
+[seguir_2014].[dbo].[Seguimiento].[eta] as ETAseguimiento,
+[seguir_2014].[dbo].[Seguimiento].[etd] as ETDseguimiento,
+null as [StatusEmbarque],
+[seguir_2014].[dbo].[Seguimiento].[status] as StatusSeguimiento,
+[seguir_2014].[dbo].[Seguimiento].[modo],
+[Basico_InternationalLine_2018].[dbo].[vendedores].[Activo],
+[Dataset_InternationalLine_2018].[dbo].[Boleta].[Origen] as origenBoleta,
+[Dataset_InternationalLine_2018].[dbo].[Boleta].[Destino] as destinoBoleta,
+'InternationalLine' as [BD],
+null as teus,
+[seguir_2014].[dbo].[Seguimiento].[fecha]
+
+FROM [seguir_2014].[dbo].[Seguimiento]
+
+LEFT JOIN [Basico_InternationalLine_2018].[dbo].[clientes] ON ([Basico_InternationalLine_2018].[dbo].[clientes].[codigo] = [seguir_2014].[dbo].[Seguimiento].[cliente])
+LEFT JOIN [Dataset_InternationalLine_2018].[dbo].[Boleta] ON ([Dataset_InternationalLine_2018].[dbo].[Boleta].[posicion] = [seguir_2014].[dbo].[Seguimiento].[posicion])
+LEFT JOIN [Basico_InternationalLine_2018].[dbo].[vendedores] ON ([seguir_2014].[dbo].[Seguimiento].[vendedor] = [Basico_InternationalLine_2018].[dbo].[Vendedores].[codigo])
+LEFT JOIN [Basico_InternationalLine_2018].[dbo].[Traficos] ON ([Basico_InternationalLine_2018].[dbo].[Traficos].[codigo] = [seguir_2014].[dbo].[Seguimiento].[trafico])
+LEFT JOIN [Dataset_InternationalLine_2018].[dbo].[InfoFactura] ON ([Dataset_InternationalLine_2018].[dbo].[InfoFactura].[seguimiento] = [seguir_2014].[dbo].[Seguimiento].[numero])
+
+WHERE [seguir_2014].[dbo].[Seguimiento].numero not in (
+    SELECT num 
+    from JoinInternational.dbo.inteligence 
+    where BD = 'InternationalLine')
+
+GROUP BY 
+[seguir_2014].[dbo].[Seguimiento].[numero],
+[seguir_2014].[dbo].[Seguimiento].[origen],
+[seguir_2014].[dbo].[Seguimiento].[destino],
+[Basico_InternationalLine_2018].[dbo].[clientes].[empresa],  
+[Dataset_InternationalLine_2018].[dbo].[InfoFactura].[transportista],
+[seguir_2014].[dbo].[Seguimiento].[Pago],
+[Dataset_InternationalLine_2018].[dbo].[Boleta].[agente],   
+[Dataset_InternationalLine_2018].[dbo].[Boleta].[consignatario],
+[Dataset_InternationalLine_2018].[dbo].[Boleta].[embarcador],
+[Basico_InternationalLine_2018].[dbo].[vendedores].[nombre],
+[seguir_2014].[dbo].[Seguimiento].[Iniciales],
+[Basico_InternationalLine_2018].[dbo].[Traficos].[nombre], 
+[seguir_2014].[dbo].[Seguimiento].[ContratoCli],
+[seguir_2014].[dbo].[Seguimiento].[ContratoTra],
+[seguir_2014].[dbo].[Seguimiento].[eta],
+[seguir_2014].[dbo].[Seguimiento].[etd],
+[seguir_2014].[dbo].[Seguimiento].[status],
+[seguir_2014].[dbo].[Seguimiento].[modo],
+[Basico_InternationalLine_2018].[dbo].[vendedores].[Activo],
+[Dataset_InternationalLine_2018].[dbo].[Boleta].[Origen],
+[Dataset_InternationalLine_2018].[dbo].[Boleta].[Destino],
+[seguir_2014].[dbo].[Seguimiento].fecha
+
+order by numero desc
+
+-------------------------------------------------------------------------------------------------------------------------------------
+INSERT INTO JoinInternational.dbo.inteligence
+
+SELECT 
+concat(str([seguir].[dbo].[Seguimiento].[numero]),'IL') as numero,
+[seguir].[dbo].[Seguimiento].[numero] as num,
+[seguir].[dbo].[Seguimiento].[origen],
+[seguir].[dbo].[Seguimiento].[destino],
+[Basico_InterLine_2018].[dbo].[clientes].[empresa] as clientes,  
+[Dataset_InterLine_2018].[dbo].[InfoFactura].[transportista],
+[seguir].[dbo].[Seguimiento].[Pago],
+[Dataset_InterLine_2018].[dbo].[Boleta].[agente],   
+[Dataset_InterLine_2018].[dbo].[Boleta].[consignatario],
+[Dataset_InterLine_2018].[dbo].[Boleta].[embarcador],
+[Basico_InterLine_2018].[dbo].[vendedores].[nombre],
+[seguir].[dbo].[Seguimiento].[Iniciales] as InicialesSeguimiento,
+null as [InicialesEmbarqueAereo],
+null as [movimiento],
+null as tipo,
+null as unidad,
+null as terminos,
+null as peso, 
+null as volumen, 
+null as tara, 
+null as Envase, 
+null as profit,
+null as empresa,
+null as [consolidado],
+null as [posicion],
+null as [pagoflete],
+null as [fechaembarque],
+null as [fecharetiro],
+null as [InicialesEmbarque],
+null as [ContratoCLIEmbarque],
+null as [ContratoTraEmbarque],
+null as [ETDembarque],
+null as [ETAembarque],
+null as [operacion],
+[Basico_InterLine_2018].[dbo].[Traficos].[nombre] as Trafico, 
+[seguir].[dbo].[Seguimiento].[ContratoCli] as ContratoCLISeguimiento,
+[seguir].[dbo].[Seguimiento].[ContratoTra] as ContratoTraSeguimiento,
+[seguir].[dbo].[Seguimiento].[eta] as ETAseguimiento,
+[seguir].[dbo].[Seguimiento].[etd] as ETDseguimiento,
+null as [StatusEmbarque],
+[seguir].[dbo].[Seguimiento].[status] as StatusSeguimiento,
+[seguir].[dbo].[Seguimiento].[modo],
+[Basico_InterLine_2018].[dbo].[vendedores].[Activo],
+[Dataset_InterLine_2018].[dbo].[Boleta].[Origen] as origenBoleta,
+[Dataset_InterLine_2018].[dbo].[Boleta].[Destino] as destinoBoleta,
+'InterLine' as [BD],
+null as teus,
+[seguir].[dbo].[Seguimiento].[fecha]
+
+FROM [seguir].[dbo].[Seguimiento]
+
+LEFT JOIN [Basico_InterLine_2018].[dbo].[clientes] ON ([Basico_InterLine_2018].[dbo].[clientes].[codigo] = [seguir].[dbo].[Seguimiento].[cliente])
+LEFT JOIN [Dataset_InterLine_2018].[dbo].[Boleta] ON ([Dataset_InterLine_2018].[dbo].[Boleta].[posicion] = [seguir].[dbo].[Seguimiento].[posicion])
+LEFT JOIN [Basico_InterLine_2018].[dbo].[vendedores] ON ([seguir].[dbo].[Seguimiento].[vendedor] = [Basico_InterLine_2018].[dbo].[Vendedores].[codigo])
+LEFT JOIN [Basico_InterLine_2018].[dbo].[Traficos] ON ([Basico_InterLine_2018].[dbo].[Traficos].[codigo] = [seguir].[dbo].[Seguimiento].[trafico])
+LEFT JOIN [Dataset_InterLine_2018].[dbo].[InfoFactura] ON ([Dataset_InterLine_2018].[dbo].[InfoFactura].[seguimiento] = [seguir].[dbo].[Seguimiento].[numero])
+
+WHERE [seguir].[dbo].[Seguimiento].numero not in (
+    SELECT num 
+    from JoinInternational.dbo.inteligence 
+    where BD = 'InterLine')
+
+GROUP BY 
+[seguir].[dbo].[Seguimiento].[numero],
+[seguir].[dbo].[Seguimiento].[origen],
+[seguir].[dbo].[Seguimiento].[destino],
+[Basico_InterLine_2018].[dbo].[clientes].[empresa],  
+[Dataset_InterLine_2018].[dbo].[InfoFactura].[transportista],
+[seguir].[dbo].[Seguimiento].[Pago],
+[Dataset_InterLine_2018].[dbo].[Boleta].[agente],   
+[Dataset_InterLine_2018].[dbo].[Boleta].[consignatario],
+[Dataset_InterLine_2018].[dbo].[Boleta].[embarcador],
+[Basico_InterLine_2018].[dbo].[vendedores].[nombre],
+[seguir].[dbo].[Seguimiento].[Iniciales],
+[Basico_InterLine_2018].[dbo].[Traficos].[nombre], 
+[seguir].[dbo].[Seguimiento].[ContratoCli],
+[seguir].[dbo].[Seguimiento].[ContratoTra],
+[seguir].[dbo].[Seguimiento].[eta],
+[seguir].[dbo].[Seguimiento].[etd],
+[seguir].[dbo].[Seguimiento].[status],
+[seguir].[dbo].[Seguimiento].[modo],
+[Basico_InterLine_2018].[dbo].[vendedores].[Activo],
+[Dataset_InterLine_2018].[dbo].[Boleta].[Origen],
+[Dataset_InterLine_2018].[dbo].[Boleta].[Destino],
+[seguir].[dbo].[Seguimiento].fecha
+
+order by numero desc
+-----------------------------------------------------------------------------------------------------------
+UPDATE [JoinInternational].[dbo].[inteligence]
+
+SET
+[JoinInternational].[dbo].[inteligence].InicialesEmbarqueAereo = [import].[dbo].[Embarqueaereo].[iniciales],
+[JoinInternational].[dbo].[inteligence].terminos = [import].[dbo].[Embarqueaereo].[terminos],
+[JoinInternational].[dbo].[inteligence].empresa = [import].[dbo].[Embarqueaereo].[empresa],
+[JoinInternational].[dbo].[inteligence].consolidado = [import].[dbo].[Embarqueaereo].[consolidado],
+[JoinInternational].[dbo].[inteligence].posicion = [import].[dbo].[Embarqueaereo].[posicion],
+[JoinInternational].[dbo].[inteligence].pagoflete = [import].[dbo].[Embarqueaereo].[pagoflete],
+[JoinInternational].[dbo].[inteligence].fechaembarque = [import].[dbo].[Embarqueaereo].[fechaembarque],
+[JoinInternational].[dbo].[inteligence].fecharetiro = [import].[dbo].[Embarqueaereo].[fecharetiro],
+[JoinInternational].[dbo].[inteligence].InicialesEmbarque = [import].[dbo].[Embarqueaereo].[iniciales], 
+[JoinInternational].[dbo].[inteligence].[ContratoCLIEmbarque] = [import].[dbo].[Embarqueaereo].[ContratoCli],
+[JoinInternational].[dbo].[inteligence].ContratoTraEmbarque = [import].[dbo].[Embarqueaereo].[ContratoTra],
+[JoinInternational].[dbo].[inteligence].ETDembarque = [import].[dbo].[Embarqueaereo].[ETD],
+[JoinInternational].[dbo].[inteligence].[ETAembarque] = [import].[dbo].[Embarqueaereo].[ETA],
+[JoinInternational].[dbo].[inteligence].operacion = [import].[dbo].[Embarqueaereo].[operacion],
+[JoinInternational].[dbo].[inteligence].StatusEmbarque = [import].[dbo].[Embarqueaereo].[status]
+
+
+FROM [JoinInternational].[dbo].[inteligence]
+LEFT JOIN [import].[dbo].[Embarqueaereo] ON ([JoinInternational].[dbo].[inteligence].num = [import].[dbo].[Embarqueaereo].seguimiento)
+
+WHERE [JoinInternational].[dbo].[inteligence].posicion is null
+AND [JoinInternational].[dbo].[inteligence].[BD] = 'InterLine'
+--------------------------------------------------------------------------------------------------------------
+UPDATE [JoinInternational].[dbo].[inteligence]
+
+SET
+[JoinInternational].[dbo].[inteligence].InicialesEmbarqueAereo = [impterra].[dbo].[Embarqueaereo].[iniciales],
+[JoinInternational].[dbo].[inteligence].terminos = [impterra].[dbo].[Embarqueaereo].[terminos],
+[JoinInternational].[dbo].[inteligence].empresa = [impterra].[dbo].[Embarqueaereo].[empresa],
+[JoinInternational].[dbo].[inteligence].consolidado = [impterra].[dbo].[Embarqueaereo].[consolidado],
+[JoinInternational].[dbo].[inteligence].posicion = [impterra].[dbo].[Embarqueaereo].[posicion],
+[JoinInternational].[dbo].[inteligence].pagoflete = [impterra].[dbo].[Embarqueaereo].[pagoflete],
+[JoinInternational].[dbo].[inteligence].fechaembarque = [impterra].[dbo].[Embarqueaereo].[fechaembarque],
+[JoinInternational].[dbo].[inteligence].fecharetiro = [impterra].[dbo].[Embarqueaereo].[fecharetiro],
+[JoinInternational].[dbo].[inteligence].InicialesEmbarque = [impterra].[dbo].[Embarqueaereo].[iniciales], 
+[JoinInternational].[dbo].[inteligence].[ContratoCLIEmbarque] = [impterra].[dbo].[Embarqueaereo].[ContratoCli],
+[JoinInternational].[dbo].[inteligence].ContratoTraEmbarque = [impterra].[dbo].[Embarqueaereo].[ContratoTra],
+[JoinInternational].[dbo].[inteligence].ETDembarque = [impterra].[dbo].[Embarqueaereo].[ETD],
+[JoinInternational].[dbo].[inteligence].[ETAembarque] = [impterra].[dbo].[Embarqueaereo].[ETA],
+[JoinInternational].[dbo].[inteligence].operacion = [impterra].[dbo].[Embarqueaereo].[operacion],
+[JoinInternational].[dbo].[inteligence].StatusEmbarque = [impterra].[dbo].[Embarqueaereo].[status]
+
+
+FROM [JoinInternational].[dbo].[inteligence]
+LEFT JOIN [impterra].[dbo].[Embarqueaereo] ON ([JoinInternational].[dbo].[inteligence].num = [impterra].[dbo].[Embarqueaereo].seguimiento)
+
+WHERE [JoinInternational].[dbo].[inteligence].posicion is null
+AND [JoinInternational].[dbo].[inteligence].[BD] = 'InterLine'
+
+----------------------------------------------------------------------------------------
+UPDATE [JoinInternational].[dbo].[inteligence]
+
+SET
+[JoinInternational].[dbo].[inteligence].InicialesEmbarqueAereo = [expterra].[dbo].[Embarqueaereo].[iniciales],
+[JoinInternational].[dbo].[inteligence].terminos = [expterra].[dbo].[Embarqueaereo].[terminos],
+[JoinInternational].[dbo].[inteligence].empresa = [expterra].[dbo].[Embarqueaereo].[empresa],
+[JoinInternational].[dbo].[inteligence].consolidado = [expterra].[dbo].[Embarqueaereo].[consolidado],
+[JoinInternational].[dbo].[inteligence].posicion = [expterra].[dbo].[Embarqueaereo].[posicion],
+[JoinInternational].[dbo].[inteligence].pagoflete = [expterra].[dbo].[Embarqueaereo].[pagoflete],
+[JoinInternational].[dbo].[inteligence].fechaembarque = [expterra].[dbo].[Embarqueaereo].[fechaembarque],
+[JoinInternational].[dbo].[inteligence].fecharetiro = [expterra].[dbo].[Embarqueaereo].[fecharetiro],
+[JoinInternational].[dbo].[inteligence].InicialesEmbarque = [expterra].[dbo].[Embarqueaereo].[iniciales], 
+[JoinInternational].[dbo].[inteligence].[ContratoCLIEmbarque] = [expterra].[dbo].[Embarqueaereo].[ContratoCli],
+[JoinInternational].[dbo].[inteligence].ContratoTraEmbarque = [expterra].[dbo].[Embarqueaereo].[ContratoTra],
+[JoinInternational].[dbo].[inteligence].ETDembarque = [expterra].[dbo].[Embarqueaereo].[ETD],
+[JoinInternational].[dbo].[inteligence].[ETAembarque] = [expterra].[dbo].[Embarqueaereo].[ETA],
+[JoinInternational].[dbo].[inteligence].operacion = [expterra].[dbo].[Embarqueaereo].[operacion],
+[JoinInternational].[dbo].[inteligence].StatusEmbarque = [expterra].[dbo].[Embarqueaereo].[status]
+
+
+FROM [JoinInternational].[dbo].[inteligence]
+LEFT JOIN [expterra].[dbo].[Embarqueaereo] ON ([JoinInternational].[dbo].[inteligence].num = [expterra].[dbo].[Embarqueaereo].seguimiento)
+
+WHERE [JoinInternational].[dbo].[inteligence].posicion is null
+AND [JoinInternational].[dbo].[inteligence].[BD] = 'InterLine'
+
+--------------------------------------------------------------------------------------------------------------
+UPDATE [JoinInternational].[dbo].[inteligence]
+
+SET
+[JoinInternational].[dbo].[inteligence].InicialesEmbarqueAereo = [expmarit].[dbo].[Embarqueaereo].[iniciales],
+[JoinInternational].[dbo].[inteligence].terminos = [expmarit].[dbo].[Embarqueaereo].[terminos],
+[JoinInternational].[dbo].[inteligence].empresa = [expmarit].[dbo].[Embarqueaereo].[empresa],
+[JoinInternational].[dbo].[inteligence].consolidado = [expmarit].[dbo].[Embarqueaereo].[consolidado],
+[JoinInternational].[dbo].[inteligence].posicion = [expmarit].[dbo].[Embarqueaereo].[posicion],
+[JoinInternational].[dbo].[inteligence].pagoflete = [expmarit].[dbo].[Embarqueaereo].[pagoflete],
+[JoinInternational].[dbo].[inteligence].fechaembarque = [expmarit].[dbo].[Embarqueaereo].[fechaembarque],
+[JoinInternational].[dbo].[inteligence].fecharetiro = [expmarit].[dbo].[Embarqueaereo].[fecharetiro],
+[JoinInternational].[dbo].[inteligence].InicialesEmbarque = [expmarit].[dbo].[Embarqueaereo].[iniciales], 
+[JoinInternational].[dbo].[inteligence].[ContratoCLIEmbarque] = [expmarit].[dbo].[Embarqueaereo].[ContratoCli],
+[JoinInternational].[dbo].[inteligence].ContratoTraEmbarque = [expmarit].[dbo].[Embarqueaereo].[ContratoTra],
+[JoinInternational].[dbo].[inteligence].ETDembarque = [expmarit].[dbo].[Embarqueaereo].[ETD],
+[JoinInternational].[dbo].[inteligence].[ETAembarque] = [expmarit].[dbo].[Embarqueaereo].[ETA],
+[JoinInternational].[dbo].[inteligence].operacion = [expmarit].[dbo].[Embarqueaereo].[operacion],
+[JoinInternational].[dbo].[inteligence].StatusEmbarque = [expmarit].[dbo].[Embarqueaereo].[status]
+
+
+FROM [JoinInternational].[dbo].[inteligence]
+LEFT JOIN [expmarit].[dbo].[Embarqueaereo] ON ([JoinInternational].[dbo].[inteligence].num = [expmarit].[dbo].[Embarqueaereo].seguimiento)
+
+WHERE [JoinInternational].[dbo].[inteligence].posicion is null
+AND [JoinInternational].[dbo].[inteligence].[BD] = 'InterLine'
+
+---------------------------------------------------------------------------------------------------
+****************************************************************************************************
+UPDATE [JoinInternational].[dbo].[inteligence]
+
+SET
+[JoinInternational].[dbo].[inteligence].InicialesEmbarqueAereo = [export_2014].[dbo].[Embarqueaereo].[iniciales],
+[JoinInternational].[dbo].[inteligence].terminos = [export_2014].[dbo].[Embarqueaereo].[terminos],
+[JoinInternational].[dbo].[inteligence].empresa = [export_2014].[dbo].[Embarqueaereo].[empresa],
+[JoinInternational].[dbo].[inteligence].consolidado = [export_2014].[dbo].[Embarqueaereo].[consolidado],
+[JoinInternational].[dbo].[inteligence].posicion = [export_2014].[dbo].[Embarqueaereo].[posicion],
+[JoinInternational].[dbo].[inteligence].pagoflete = [export_2014].[dbo].[Embarqueaereo].[pagoflete],
+[JoinInternational].[dbo].[inteligence].fechaembarque = [export_2014].[dbo].[Embarqueaereo].[fechaembarque],
+[JoinInternational].[dbo].[inteligence].fecharetiro = [export_2014].[dbo].[Embarqueaereo].[fecharetiro],
+[JoinInternational].[dbo].[inteligence].InicialesEmbarque = [export_2014].[dbo].[Embarqueaereo].[iniciales], 
+[JoinInternational].[dbo].[inteligence].[ContratoCLIEmbarque] = [export_2014].[dbo].[Embarqueaereo].[ContratoCli],
+[JoinInternational].[dbo].[inteligence].ContratoTraEmbarque = [export_2014].[dbo].[Embarqueaereo].[ContratoTra],
+[JoinInternational].[dbo].[inteligence].ETDembarque = [export_2014].[dbo].[Embarqueaereo].[ETD],
+[JoinInternational].[dbo].[inteligence].[ETAembarque] = [export_2014].[dbo].[Embarqueaereo].[ETA],
+[JoinInternational].[dbo].[inteligence].operacion = [export_2014].[dbo].[Embarqueaereo].[operacion],
+[JoinInternational].[dbo].[inteligence].StatusEmbarque = [export_2014].[dbo].[Embarqueaereo].[status]
+
+
+FROM [JoinInternational].[dbo].[inteligence]
+LEFT JOIN [export_2014].[dbo].[Embarqueaereo] ON ([JoinInternational].[dbo].[inteligence].num = [export_2014].[dbo].[Embarqueaereo].seguimiento)
+
+WHERE [JoinInternational].[dbo].[inteligence].posicion is null
+AND [JoinInternational].[dbo].[inteligence].[BD] = 'InternationalLine'
+
+------------------------------------------------------------------------------------------------------------------
+UPDATE [JoinInternational].[dbo].[inteligence]
+
+SET
+[JoinInternational].[dbo].[inteligence].InicialesEmbarqueAereo = [expterra_2014].[dbo].[Embarqueaereo].[iniciales],
+[JoinInternational].[dbo].[inteligence].terminos = [expterra_2014].[dbo].[Embarqueaereo].[terminos],
+[JoinInternational].[dbo].[inteligence].empresa = [expterra_2014].[dbo].[Embarqueaereo].[empresa],
+[JoinInternational].[dbo].[inteligence].consolidado = [expterra_2014].[dbo].[Embarqueaereo].[consolidado],
+[JoinInternational].[dbo].[inteligence].posicion = [expterra_2014].[dbo].[Embarqueaereo].[posicion],
+[JoinInternational].[dbo].[inteligence].pagoflete = [expterra_2014].[dbo].[Embarqueaereo].[pagoflete],
+[JoinInternational].[dbo].[inteligence].fechaembarque = [expterra_2014].[dbo].[Embarqueaereo].[fechaembarque],
+[JoinInternational].[dbo].[inteligence].fecharetiro = [expterra_2014].[dbo].[Embarqueaereo].[fecharetiro],
+[JoinInternational].[dbo].[inteligence].InicialesEmbarque = [expterra_2014].[dbo].[Embarqueaereo].[iniciales], 
+[JoinInternational].[dbo].[inteligence].[ContratoCLIEmbarque] = [expterra_2014].[dbo].[Embarqueaereo].[ContratoCli],
+[JoinInternational].[dbo].[inteligence].ContratoTraEmbarque = [expterra_2014].[dbo].[Embarqueaereo].[ContratoTra],
+[JoinInternational].[dbo].[inteligence].ETDembarque = [expterra_2014].[dbo].[Embarqueaereo].[ETD],
+[JoinInternational].[dbo].[inteligence].[ETAembarque] = [expterra_2014].[dbo].[Embarqueaereo].[ETA],
+[JoinInternational].[dbo].[inteligence].operacion = [expterra_2014].[dbo].[Embarqueaereo].[operacion],
+[JoinInternational].[dbo].[inteligence].StatusEmbarque = [expterra_2014].[dbo].[Embarqueaereo].[status]
+
+
+FROM [JoinInternational].[dbo].[inteligence]
+LEFT JOIN [expterra_2014].[dbo].[Embarqueaereo] ON ([JoinInternational].[dbo].[inteligence].num = [expterra_2014].[dbo].[Embarqueaereo].seguimiento)
+
+WHERE [JoinInternational].[dbo].[inteligence].posicion is null
+AND [JoinInternational].[dbo].[inteligence].[BD] = 'InternationalLine'
+
+-----------------------------------------------------------------------------------------------------
+UPDATE [JoinInternational].[dbo].[inteligence]
+
+SET
+[JoinInternational].[dbo].[inteligence].InicialesEmbarqueAereo = [expmarit_2014].[dbo].[Embarqueaereo].[iniciales],
+[JoinInternational].[dbo].[inteligence].terminos = [expmarit_2014].[dbo].[Embarqueaereo].[terminos],
+[JoinInternational].[dbo].[inteligence].empresa = [expmarit_2014].[dbo].[Embarqueaereo].[empresa],
+[JoinInternational].[dbo].[inteligence].consolidado = [expmarit_2014].[dbo].[Embarqueaereo].[consolidado],
+[JoinInternational].[dbo].[inteligence].posicion = [expmarit_2014].[dbo].[Embarqueaereo].[posicion],
+[JoinInternational].[dbo].[inteligence].pagoflete = [expmarit_2014].[dbo].[Embarqueaereo].[pagoflete],
+[JoinInternational].[dbo].[inteligence].fechaembarque = [expmarit_2014].[dbo].[Embarqueaereo].[fechaembarque],
+[JoinInternational].[dbo].[inteligence].fecharetiro = [expmarit_2014].[dbo].[Embarqueaereo].[fecharetiro],
+[JoinInternational].[dbo].[inteligence].InicialesEmbarque = [expmarit_2014].[dbo].[Embarqueaereo].[iniciales], 
+[JoinInternational].[dbo].[inteligence].[ContratoCLIEmbarque] = [expmarit_2014].[dbo].[Embarqueaereo].[ContratoCli],
+[JoinInternational].[dbo].[inteligence].ContratoTraEmbarque = [expmarit_2014].[dbo].[Embarqueaereo].[ContratoTra],
+[JoinInternational].[dbo].[inteligence].ETDembarque = [expmarit_2014].[dbo].[Embarqueaereo].[ETD],
+[JoinInternational].[dbo].[inteligence].[ETAembarque] = [expmarit_2014].[dbo].[Embarqueaereo].[ETA],
+[JoinInternational].[dbo].[inteligence].operacion = [expmarit_2014].[dbo].[Embarqueaereo].[operacion],
+[JoinInternational].[dbo].[inteligence].StatusEmbarque = [expmarit_2014].[dbo].[Embarqueaereo].[status]
+
+
+FROM [JoinInternational].[dbo].[inteligence]
+LEFT JOIN [expmarit_2014].[dbo].[Embarqueaereo] ON ([JoinInternational].[dbo].[inteligence].num = [expmarit_2014].[dbo].[Embarqueaereo].seguimiento)
+
+WHERE [JoinInternational].[dbo].[inteligence].posicion is null
+AND [JoinInternational].[dbo].[inteligence].[BD] = 'InternationalLine'
+
+---------------------------------------------------------------------------------------------------------
+UPDATE [JoinInternational].[dbo].[inteligence]
+
+SET
+[JoinInternational].[dbo].[inteligence].InicialesEmbarqueAereo = [impmarit_2014].[dbo].[Embarqueaereo].[iniciales],
+[JoinInternational].[dbo].[inteligence].terminos = [impmarit_2014].[dbo].[Embarqueaereo].[terminos],
+[JoinInternational].[dbo].[inteligence].empresa = [impmarit_2014].[dbo].[Embarqueaereo].[empresa],
+[JoinInternational].[dbo].[inteligence].consolidado = [impmarit_2014].[dbo].[Embarqueaereo].[consolidado],
+[JoinInternational].[dbo].[inteligence].posicion = [impmarit_2014].[dbo].[Embarqueaereo].[posicion],
+[JoinInternational].[dbo].[inteligence].pagoflete = [impmarit_2014].[dbo].[Embarqueaereo].[pagoflete],
+[JoinInternational].[dbo].[inteligence].fechaembarque = [impmarit_2014].[dbo].[Embarqueaereo].[fechaembarque],
+[JoinInternational].[dbo].[inteligence].fecharetiro = [impmarit_2014].[dbo].[Embarqueaereo].[fecharetiro],
+[JoinInternational].[dbo].[inteligence].InicialesEmbarque = [impmarit_2014].[dbo].[Embarqueaereo].[iniciales], 
+[JoinInternational].[dbo].[inteligence].[ContratoCLIEmbarque] = [impmarit_2014].[dbo].[Embarqueaereo].[ContratoCli],
+[JoinInternational].[dbo].[inteligence].ContratoTraEmbarque = [impmarit_2014].[dbo].[Embarqueaereo].[ContratoTra],
+[JoinInternational].[dbo].[inteligence].ETDembarque = [impmarit_2014].[dbo].[Embarqueaereo].[ETD],
+[JoinInternational].[dbo].[inteligence].[ETAembarque] = [impmarit_2014].[dbo].[Embarqueaereo].[ETA],
+[JoinInternational].[dbo].[inteligence].operacion = [impmarit_2014].[dbo].[Embarqueaereo].[operacion],
+[JoinInternational].[dbo].[inteligence].StatusEmbarque = [impmarit_2014].[dbo].[Embarqueaereo].[status]
+
+
+FROM [JoinInternational].[dbo].[inteligence]
+LEFT JOIN [impmarit_2014].[dbo].[Embarqueaereo] ON ([JoinInternational].[dbo].[inteligence].num = [impmarit_2014].[dbo].[Embarqueaereo].seguimiento)
+
+WHERE [JoinInternational].[dbo].[inteligence].posicion is null
+AND [JoinInternational].[dbo].[inteligence].[BD] = 'InternationalLine'
+
+----------------------------------------------------------------------------------------
