@@ -1,0 +1,185 @@
+Create Procedure query20updatecalculations_2014impmarit_2014
+AS
+
+insert into JoinInternational.dbo.calculations_2014
+(numero, posicion, teus, movimiento, tipo, tara, envase, volumen, pc, cc, precio, costo, arbitraje)
+
+Select [impmarit_2014].[dbo].[Envases].numero,
+	[impmarit_2014].[dbo].[Embarqueaereo].posicion,
+	(CASE
+	when [impmarit_2014].[dbo].[Envases].[unidad] = '20'
+		then ([impmarit_2014].[dbo].[Envases].[cantidad] * count([impmarit_2014].[dbo].[Envases].[numero]))
+	when [impmarit_2014].[dbo].[Envases].[unidad] = '40' or [impmarit_2014].[dbo].[Envases].[unidad] = '45'
+		then ([impmarit_2014].[dbo].[Envases].[cantidad] * 2 * count([impmarit_2014].[dbo].[Envases].[numero]))
+	else
+		0
+		END) AS teus,
+	[impmarit_2014].[dbo].[Envases].movimiento,
+	[impmarit_2014].[dbo].[Envases].tipo,
+	[impmarit_2014].[dbo].[Envases].tara,
+	[impmarit_2014].[dbo].[Envases].envase,
+	[impmarit_2014].[dbo].[Envases].volumen,
+	[impmarit_2014].[dbo].[Envases].precio*[impmarit_2014].[dbo].[Envases].cantidad,
+	[impmarit_2014].[dbo].[Envases].costo*[impmarit_2014].[dbo].[Envases].cantidad,
+	[impmarit_2014].[dbo].[serviceaereo].precio,
+	[impmarit_2014].[dbo].[serviceaereo].costo,
+	[impmarit_2014].[dbo].[serviceaereo].arbitraje
+
+
+  FROM [impmarit_2014].[dbo].[Envases]
+  left join [impmarit_2014].[dbo].[embarqueaereo] ON ([impmarit_2014].[dbo].[embarqueaereo].numero = [impmarit_2014].[dbo].[Envases].numero)
+  left join [impmarit_2014].[dbo].[serviceaereo] ON ([impmarit_2014].[dbo].[serviceaereo].numero = [impmarit_2014].[dbo].[envases].numero)
+  
+  WHERE [impmarit_2014].[dbo].[Embarqueaereo].posicion not in (
+    SELECT posicion
+    from JoinInternational.dbo.calculations_2014)
+
+  group by 
+  [impmarit_2014].[dbo].[envases].numero, [impmarit_2014].[dbo].[serviceaereo].numero, 
+  unidad, cantidad, movimiento, tipo, tara, envase, 
+  [impmarit_2014].[dbo].[serviceaereo].precio, [impmarit_2014].[dbo].[serviceaereo].costo,
+  [impmarit_2014].[dbo].[Envases].precio, [impmarit_2014].[dbo].[Envases].cantidad,
+  [impmarit_2014].[dbo].[Envases].costo, [impmarit_2014].dbo.serviceaereo.arbitraje,
+  [impmarit_2014].dbo.envases.volumen,
+  [impmarit_2014].dbo.embarqueaereo.posicion
+  
+  
+  
+  
+  
+  ---------------------------------------------------------------------------------------------------------------------
+  Create Procedure query12updateILimpmaritt_2014
+AS
+INSERT INTO JoinInternational.dbo.inteligence
+(numero, num, origen, destino, clientes, transportista, pago, agente, consignatario, embarcador,
+nombre, InicialesSeguimiento, InicialesEmbarqueAereo, terminos, empresa, consolidado, posicion,
+pagoflete, InicialesEmbarque, ContratoCLIEmbarque, ContratoTraEmbarque, operacion, trafico,
+ContratoCLISeguimiento, ContratoTraSeguimiento, StatusEmbarque, StatusSeguimiento, modo, Activo,
+origenBoleta, destinoBoleta, BD, myStatus,
+fechaembarque, fecharetiro, ETDembarque, ETAembarque, ETAseguimiento, ETDseguimiento, 
+fecha, vencimiento
+)
+
+SELECT 
+concat(str([seguir_2014].[dbo].[Seguimiento].[numero]),'INL'),
+[seguir_2014].[dbo].[Seguimiento].[numero],
+[seguir_2014].[dbo].[Seguimiento].[origen],
+[seguir_2014].[dbo].[Seguimiento].[destino],
+[Basico_InternationalLine_2018].[dbo].[clientes].[empresa],  
+[Dataset_InternationalLine_2018].[dbo].[InfoFactura].[transportista],
+[seguir_2014].[dbo].[Seguimiento].[Pago],
+[Dataset_InternationalLine_2018].[dbo].[Boleta].[agente],   
+[Dataset_InternationalLine_2018].[dbo].[Boleta].[consignatario],
+[Dataset_InternationalLine_2018].[dbo].[Boleta].[embarcador],
+[Basico_InternationalLine_2018].[dbo].[vendedores].[nombre],
+[seguir_2014].[dbo].[Seguimiento].[Iniciales],
+[impmaritt_2014].[dbo].[Embarqueaereo].[iniciales],
+[impmaritt_2014].[dbo].[Embarqueaereo].[terminos],
+[impmaritt_2014].[dbo].[Embarqueaereo].[empresa],
+[impmaritt_2014].[dbo].[Embarqueaereo].[consolidado],
+[impmaritt_2014].[dbo].[Embarqueaereo].[posicion],
+[impmaritt_2014].[dbo].[Embarqueaereo].[pagoflete],
+[impmaritt_2014].[dbo].[Embarqueaereo].[iniciales], 
+[impmaritt_2014].[dbo].[Embarqueaereo].[ContratoCli],
+[impmaritt_2014].[dbo].[Embarqueaereo].[ContratoTra],
+[impmaritt_2014].[dbo].[Embarqueaereo].[operacion],
+[Basico_InternationalLine_2018].[dbo].[Traficos].[nombre], 
+[seguir_2014].[dbo].[Seguimiento].[ContratoCli],
+[seguir_2014].[dbo].[Seguimiento].[ContratoTra],
+[impmaritt_2014].[dbo].[Embarqueaereo].[status],
+[seguir_2014].[dbo].[Seguimiento].[status],
+[seguir_2014].[dbo].[Seguimiento].[modo],
+[Basico_InternationalLine_2018].[dbo].[vendedores].[Activo],
+[Dataset_InternationalLine_2018].[dbo].[Boleta].[Origen],
+[Dataset_InternationalLine_2018].[dbo].[Boleta].[Destino],
+'InternationalLine' as [BD],
+seguir_2014.dbo.Seguimiento.[status],
+impmaritt_2014.dbo.Embarqueaereo.fechaembarque, 
+impmaritt_2014.dbo.Embarqueaereo.fecharetiro,
+impmaritt_2014.dbo.Embarqueaereo.ETD,
+impmaritt_2014.dbo.Embarqueaereo.ETA,
+seguir_2014.dbo.Seguimiento.eta,
+seguir_2014.dbo.Seguimiento.etd,
+seguir_2014.dbo.Seguimiento.fecha,
+seguir_2014.dbo.Seguimiento.vencimiento
+
+FROM [impmaritt_2014].[dbo].[Embarqueaereo] 
+INNER JOIN [seguir_2014].[dbo].[Seguimiento]ON ([seguir_2014].[dbo].[Seguimiento].posicion = [impmaritt_2014].[dbo].[Embarqueaereo].posicion)
+LEFT JOIN [Basico_InternationalLine_2018].[dbo].[clientes] ON ([Basico_InternationalLine_2018].[dbo].[clientes].[codigo] = [seguir_2014].[dbo].[Seguimiento].[cliente])
+LEFT JOIN [Dataset_InternationalLine_2018].[dbo].[Boleta] ON ([Dataset_InternationalLine_2018].[dbo].[Boleta].[posicion] = [seguir_2014].[dbo].[Seguimiento].[posicion])
+LEFT JOIN [Basico_InternationalLine_2018].[dbo].[vendedores] ON ([seguir_2014].[dbo].[Seguimiento].[vendedor] = [Basico_InternationalLine_2018].[dbo].[Vendedores].[codigo])
+LEFT JOIN [Basico_InternationalLine_2018].[dbo].[Traficos] ON ([Basico_InternationalLine_2018].[dbo].[Traficos].[codigo] = [seguir_2014].[dbo].[Seguimiento].[trafico])
+LEFT JOIN [Dataset_InternationalLine_2018].[dbo].[InfoFactura] ON ([Dataset_InternationalLine_2018].[dbo].[InfoFactura].[seguimiento] = [seguir_2014].[dbo].[Seguimiento].[numero])
+
+
+
+WHERE [seguir_2014].[dbo].[Seguimiento].numero not in (
+    SELECT num 
+    from JoinInternational.dbo.inteligence 
+    where BD = 'InternationalLine')
+
+GROUP BY 
+[seguir_2014].[dbo].[Seguimiento].[numero],
+[seguir_2014].[dbo].[Seguimiento].[origen],
+[seguir_2014].[dbo].[Seguimiento].[destino],
+[Basico_InternationalLine_2018].[dbo].[clientes].[empresa],  
+[Dataset_InternationalLine_2018].[dbo].[InfoFactura].[transportista],
+[seguir_2014].[dbo].[Seguimiento].[Pago],
+[Dataset_InternationalLine_2018].[dbo].[Boleta].[agente],   
+[Dataset_InternationalLine_2018].[dbo].[Boleta].[consignatario],
+[Dataset_InternationalLine_2018].[dbo].[Boleta].[embarcador],
+[Basico_InternationalLine_2018].[dbo].[vendedores].[nombre],
+[seguir_2014].[dbo].[Seguimiento].[Iniciales],
+[impmaritt_2014].[dbo].[Embarqueaereo].[iniciales],
+[impmaritt_2014].[dbo].[Embarqueaereo].[terminos],
+
+[impmaritt_2014].[dbo].[Embarqueaereo].[empresa],
+[impmaritt_2014].[dbo].[Embarqueaereo].[consolidado],
+[impmaritt_2014].[dbo].[Embarqueaereo].[posicion],
+[impmaritt_2014].[dbo].[Embarqueaereo].[pagoflete],
+[impmaritt_2014].[dbo].[Embarqueaereo].[iniciales], 
+[impmaritt_2014].[dbo].[Embarqueaereo].[ContratoCli],
+[impmaritt_2014].[dbo].[Embarqueaereo].[ContratoTra],
+[impmaritt_2014].[dbo].[Embarqueaereo].[operacion],
+
+[Basico_InternationalLine_2018].[dbo].[Traficos].[nombre], 
+[seguir_2014].[dbo].[Seguimiento].[ContratoCli],
+[seguir_2014].[dbo].[Seguimiento].[ContratoTra],
+
+[impmaritt_2014].[dbo].[Embarqueaereo].[status],
+[seguir_2014].[dbo].[Seguimiento].[status],
+[seguir_2014].[dbo].[Seguimiento].[modo],
+[Basico_InternationalLine_2018].[dbo].[vendedores].[Activo],
+[Dataset_InternationalLine_2018].[dbo].[Boleta].[Origen],
+[Dataset_InternationalLine_2018].[dbo].[Boleta].[Destino],
+impmaritt_2014.dbo.Embarqueaereo.fechaembarque, 
+impmaritt_2014.dbo.Embarqueaereo.fecharetiro,
+impmaritt_2014.dbo.Embarqueaereo.ETD,
+impmaritt_2014.dbo.Embarqueaereo.ETA,
+seguir_2014.dbo.Seguimiento.eta,
+seguir_2014.dbo.Seguimiento.etd,
+seguir_2014.dbo.Seguimiento.fecha,
+seguir_2014.dbo.Seguimiento.vencimiento
+
+
+order by numero desc
+--------------------------------------------------------------------------------------------------------
+;with imaginarytable as (																		      
+SELECT [posicion], (sum(precio/arbitraje) - sum(costo/arbitraje))+max(pc)-max(cc) as prof
+from JoinInternational.dbo.calculations_2014
+where arbitraje != 0
+group by posicion
+
+)
+
+Update JoinInternational.dbo.inteligence
+SET 
+	JoinInternational.dbo.inteligence.profit = [imaginarytable].prof
+FROM JoinInternational.dbo.inteligence
+INNER JOIN [imaginarytable] ON ([imaginarytable].posicion COLLATE DATABASE_DEFAULT= JoinInternational.dbo.inteligence.posicion COLLATE DATABASE_DEFAULT)
+where JoinInternational.dbo.inteligence.[BD] = 'InternationalLine'
+
+---------------------------------------------------------------------------------------------------------
+
+
+  
