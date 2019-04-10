@@ -1,7 +1,7 @@
 SELECT concat(boleta.tipofactura, boleta.numero) as factura, boleta.tipofactura, boleta.numero, monedas.simbolo, boleta.total, 
-asientos.monto as cobro, asientos.cambio, sum(vtas.monto) as pagos, Asientos.fecha, max(vtas.FechaImpu) as FechaPago, boleta.vto, 
+asientos.monto as cobro, asientos.cambio, vtas.monto as pagos, Asientos.fecha, vtas.FechaImpu as FechaPago, boleta.vto, 
 boleta.cliente, boleta.nrocliente, monedas.nombre, boleta.posicion, asientos.tipo, asientos.imputacion, analistas.nombre as vendedor,
-analistas.analista
+analistas.analista, vtas.autofac as Autogenerado
 into InternationalBI.dbo.cobranzas
 
 FROM Dataset_InternationalLine_2018.dbo.asientos
@@ -41,8 +41,9 @@ AND (vtas.autofac like '%0'
 	OR vtas.autofac like '%8'
 	OR vtas.autofac like '%9')
 AND vtas.monto > 0
+--and boleta.numero = 18228
 
 
 GROUP BY boleta.tipofactura, boleta.numero, monedas.simbolo, boleta.total, asientos.cambio, Asientos.fecha, boleta.vto, boleta.cliente, boleta.nrocliente, monedas.nombre, boleta.posicion, asientos.tipo
 ,asientos.imputacion, analistas.nombre, analistas.analista, asientos.monto,
-vtas.cliente, vtas.autofac
+vtas.cliente, vtas.autofac, vtas.monto, vtas.fechaimpu
