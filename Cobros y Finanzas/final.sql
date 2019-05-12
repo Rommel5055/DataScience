@@ -34,6 +34,7 @@ INNER JOIN [InternationalBI].[dbo].[analistas] ON ([InternationalBI].[dbo].[anal
 
 WHERE Dataset_InternationalLine_2018.dbo.asientos.imputacion = 1
 AND (Dataset_InternationalLine_2018.dbo.asientos.tipo = 'G' OR Dataset_InternationalLine_2018.dbo.asientos.tipo = 'P' OR Dataset_InternationalLine_2018.dbo.asientos.tipo = 'V' OR Dataset_InternationalLine_2018.dbo.asientos.tipo = 'Z')
+AND Dataset_InternationalLine_2018.dbo.asientos.detalle not like 'not/cred%'
 AND asientos.cliente != 0
 
 GROUP BY asientos.autogenerado, boleta.tipofactura, boleta.numero, monedas.simbolo, boleta.total, 
